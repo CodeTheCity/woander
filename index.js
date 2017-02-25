@@ -54,7 +54,7 @@ app.post('/fb_webhook', function (req, res) {
     response_facebook(message);
   });
 
-  p.emitter.on('go', function(query) {
+  p.emitter.on('go', function(message, query) {
     response_facebook({
       id: message.id,
       text: "You searched for " + query.subject + " " + query.state + " times"
