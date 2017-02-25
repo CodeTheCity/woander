@@ -41,7 +41,8 @@ var response_facebook = function(message) {
       }
     }
   }, function(err, data) {
-
+    console.log(err);
+    console.log(data);
   });
 };
 
