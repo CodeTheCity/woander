@@ -50,11 +50,11 @@ app.post('/fb_webhook', function (req, res) {
   var messages = req.body.entry;
   var p = new parser();
 
-  p.on('more', function(message) {
+  p.emitter.on('more', function(message) {
     response_facebook(message);
   });
 
-  p.on('go', function(query) {
+  p.emitter.on('go', function(query) {
     response_facebook({
       id: message.id,
       text: "You searched for " + query.subject + " " + query.state + " times"
