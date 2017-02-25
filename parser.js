@@ -1,12 +1,3 @@
-var natural = require('natural');
-var state = new natural.BayesClassifier();
-
-state.addDocument('is qqqq open', 'open');
-state.addDocument('when does qqqq close', 'close');
-state.addDocument('qqq closes', 'close');
-
-state.train();
-
 var regex = /(does|is|will)(.+)(open|close)/ig;
 
 var emitter = require('events');
@@ -35,7 +26,7 @@ class Parser {
 
     var query = {
       subject: match[2].trim(),
-      state: state.classify(input.text)
+      state: match[3].trim()
     };
 
     this.e.emit('go', query);
