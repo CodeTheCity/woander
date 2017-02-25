@@ -37,7 +37,7 @@ var response_facebook = function(message) {
         id: message.id
       },
       message: {
-        text: mesage.text
+        text: message.text
       }
     }
   }, function(err, data) {
