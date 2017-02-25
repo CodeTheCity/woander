@@ -29,7 +29,7 @@ class Parser {
       state: match[3].trim()
     };
 
-    this.e.emit('go', query);
+    this.e.emit('go', { id: input.id }, query);
   }
 }
 
