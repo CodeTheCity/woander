@@ -47,7 +47,7 @@ var response_facebook = function(message) {
 };
 
 app.post('/fb_webhook', function (req, res) {
-  var messages = req.body.entry;
+  var entries = req.body.entry;
   var p = new parser();
 
   p.emitter.on('more', function(message) {
@@ -61,12 +61,17 @@ app.post('/fb_webhook', function (req, res) {
     });
   });
 
-  for (var m in messages) {
-    p.run({
-      id: messages[m].sender.id,
-      text: messages[m].message.text
-    });
+  for (var e in entries) {
+    var messages = entries[e].messaging;
+
+    for (var m in messages) {
+      p.run({
+        id: messages[m].sender.id,
+        text: messages[m].message.text
+      });
+    }
   }
+
 
   res.end();
 });
