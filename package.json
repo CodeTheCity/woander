@@ -1,0 +1,26 @@
+{
+  "name": "woander",
+  "version": "1.0.0",
+  "description": "CTC8 app",
+  "main": "index.js",
+  "scripts": {
+    "build": "node node_modules/typescript/lib/tsc.js index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeTheCity/woander.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CodeTheCity/woander/issues"
+  },
+  "homepage": "https://github.com/CodeTheCity/woander#readme",
+  "devDependencies": {
+    "typescript": "^2.2.1"
+  },
+  "dependencies": {
+    "express": "^4.14.1"
+  }
+}
