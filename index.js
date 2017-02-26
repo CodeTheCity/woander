@@ -82,13 +82,17 @@ app.post('/fb_webhook', function (req, res) {
       var recipient = messenger.createRecipient(messages[m].sender.id);
       messenger.sendAction(recipient, 'mark_seen');
 
-      if (messages[m].message && messages[m].message.text) {
+      if (!messages[m].message) {
+        return;
+      }
+
+      if (messages[m].message.text) {
         fb_parser.run({
           id: messages[m].sender.id,
           text: messages[m].message.text,
           type: 'fb'
         });
-      } else if(messages[m].messeage && messages[m].message.attachments){
+      } else if(messages[m].message.attachments){
         var attachments = messages[m].message.attachments;
         attachments.forEach(function(item) {
           var reply;
