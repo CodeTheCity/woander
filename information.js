@@ -7,6 +7,7 @@ var key = config.google.api_key;
 function getDetails(query, long, lat, callback) {
     request({
         url: "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+        json: true,
         qs: {
             key: key,
             keyword: query,
@@ -42,6 +43,7 @@ function getDetails(query, long, lat, callback) {
 function getPlaceInformation(id, callback) {
     request({
         url: "https://maps.googleapis.com/maps/api/place/details/json",
+        json: true,
         qs: {
             key: key,
             placeid: id
@@ -58,6 +60,7 @@ function getPlaceInformation(id, callback) {
 function getLocation(location, callback) {
     request({
         url: "https://maps.googleapis.com/maps/api/geocode/json",
+        json: true,
         qs: {
             key: key,
             address: location
