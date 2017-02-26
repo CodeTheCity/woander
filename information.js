@@ -15,7 +15,7 @@ function getDetails(query, long, lat, callback) {
         qs: {
             key: key,
             keyword: query,
-            location: long + "," + lat,
+            location: lat + "," + long,
             rankby: 'distance'
         }
     }, function(err, res, data) {
