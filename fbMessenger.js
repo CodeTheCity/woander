@@ -38,7 +38,7 @@ FbMessenger.prototype.sendMessage = function(recipient, message, action, notific
             notification_type: notification_type
         }
     }, function(err, res, data) {
-        if (err) {
+        if (err || data.error) {
           console.log(data);
         }
     });
