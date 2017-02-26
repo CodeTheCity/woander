@@ -31,6 +31,7 @@ class Parser extends EventEmitter {
       var match = regex.exec(input.text);
 
       if (match == null) {
+        input.text = "I am not sure what you mean";
         this.emit('invalid', input);
       } else {
         var query = {
@@ -44,6 +45,7 @@ class Parser extends EventEmitter {
           }
         });
 
+        input.text = "Can you send me your locaton?";
         this.emit('location', input, query);
       }
     } else {
