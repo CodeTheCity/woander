@@ -16,6 +16,10 @@ var parser = require('./parser');
 
 var verify_token = config.facebook.verify;
 
+app.get('/privacy-policy', function(req, res) {
+    res.sendfile('privacy-policy.html', {root: './'});
+});
+
 app.get('/fb_webhook', function (req, res) {
     if (req.query['hub.verify_token'] === verify_token) {
       res.send(req.query['hub.challenge']);
