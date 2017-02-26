@@ -2,7 +2,7 @@ var async = require('async');
 
 var config = require('./config.json');
 
-var key = config.google_map_api_key;
+var key = config.google.api_key;
 
 var googleMaps = require('@google/maps').createClient({
     key: key

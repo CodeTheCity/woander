@@ -32,9 +32,16 @@ var messenger = new fb(config.facebook);
 fb_parser.on('invalid', function(message) {
   // No point showing typing when we already know the reply
   var recipient = messenger.createRecipient(message.id);
-  var fbMessage = messenger.createMessage(message.text, false, messenger.createQuickReplies(['location']));
+  var fbMessage = messenger.createMessage(message.text);
 
   messenger.sendMessage(recipient, fbMessage);
+})
+.on('location', function(message) {
+    // No point showing typing when we already know the reply
+    var recipient = messenger.createRecipient(message.id);
+    var fbMessage = messenger.createMessage(message.text, false, messenger.createQuickReplies(['location']));
+
+    messenger.sendMessage(recipient, fbMessage);
 })
 .on('go', function(message, query) {
   var recipient = messenger.createRecipient(message.id);
@@ -42,6 +49,7 @@ fb_parser.on('invalid', function(message) {
   messenger.sendAction(recipient,'typing_on');
 
   // TODO: Do some async stuff here to get useful information
+
   var fbMessage = messenger.createMessage();
   messenger.sendMessage(recipient, fbMessage);
 });
