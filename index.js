@@ -60,7 +60,7 @@ fb_parser.on('invalid', function(message) {
 
     if (data && data.length > 0) {
       text += data[0].name + " at " +
-        data[0].formatted_address + " is " +
+        data[0].address + " is " +
         (data[0].times.open_now ? "open" : "closed");
     }
 
