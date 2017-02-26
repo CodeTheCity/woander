@@ -26,39 +26,23 @@ app.get('/fb_webhook', function (req, res) {
     }
 });
 
-var response_facebook = function(message) {
-  request.post({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {
-      'access_token': config.facebook.access
-    },
-    json: true,
-    body: {
-      recipient: {
-        id: message.id
-      },
-      message: {
-        text: message.text
-      }
-    }
-  }, function(err, data) {
-    console.log(err);
-    console.log(data);
-  });
-};
-
 app.post('/fb_webhook', function (req, res) {
   var entries = req.body.entry;
   var p = new parser();
   var messenger = new fb(config.facebook);
 
   p.emitter.on('more', function(message) {
+    // No point showing typing when we already know the reply
     var recipient = messenger.createRecipient(message.id);
     var fbMessage = messenger.createMessage(message.text);
     messenger.sendMessage(recipient, fbMessage);
   });
 
   p.emitter.on('go', function(message, query) {
+    // Shows us as typing
+    messenger.sendAction(messages[m].sender.id,'typing_on');
+
+    // TODO: Do some async stuff here to get useful information
     var recipient = messenger.createRecipient(message.id);
     var fbMessage = messenger.createMessage("You searched for " + query.subject + " " + query.state + " times");
     messenger.sendMessage(recipient, fbMessage);
@@ -68,8 +52,8 @@ app.post('/fb_webhook', function (req, res) {
     var messages = entries[e].messaging;
 
     for (var m in messages) {
-      // Shows us as typing
-      messenger.sendAction(messages[m].sender.id,'typing_on');
+      // Indicate we have seen the message
+      messenger.sendAction(messages[m].sender.id,'mark_seen');
 
       p.run({
         id: messages[m].sender.id,
@@ -89,7 +73,6 @@ app.post('/fb_webhook', function (req, res) {
 
 app.post('/webhook', function(req, res) {
   var p = new parser();
-  console.log(req.body);
 
   p.emitter.on('more', function(message) {
     res.send(message);

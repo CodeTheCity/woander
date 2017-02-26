@@ -45,8 +45,6 @@ FbMessenger.prototype.sendMessage = function(recipient, message, action, notific
 
 // We can use this to set us to typing and marking the message as seen while we go get the answers
 FbMessenger.prototype.sendAction = function(recipient, action) {
-    console.log('sending action');
-    return;
     if(action.indexOf(ACTION_TYPES)){
         request.post({
             url: 'https://graph.facebook.com/v2.6/me/messages',
