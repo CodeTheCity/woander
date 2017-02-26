@@ -4,14 +4,9 @@ var request = require('request');
 var config = require('./config.json');
 var key = config.google.api_key;
 
-var googleMaps = require('@google/maps').createClient({
-
-});
-
 function getDetails(query, long, lat, callback) {
     request({
         url: "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
-        json: true,
         qs: {
             key: key,
             keyword: query,
@@ -45,11 +40,15 @@ function getDetails(query, long, lat, callback) {
 }
 
 function getPlaceInformation(id, callback) {
-    googleMaps.place({
-        placeid: id
-    }, function (err, response) {
+    request({
+        url: "https://maps.googleapis.com/maps/api/place/details/json",
+        qs: {
+            key: key,
+            placeid: id
+        }
+    }, function(err, res, data) {
         if (!err) {
-            callback(response.json.result);
+            callback(data.result);
         } else {
             console.error(err);
         }
@@ -57,11 +56,15 @@ function getPlaceInformation(id, callback) {
 }
 
 function getLocation(location, callback) {
-    googleMaps.geocode({
-        address: location
-    }, function (err, response) {
+    request({
+        url: "https://maps.googleapis.com/maps/api/geocode/json",
+        qs: {
+            key: key,
+            address: location
+        }
+    }, function (err, res, data) {
         if (!err) {
-            callback(response.json.results[0].geometry.location);
+            callback(data.results[0].geometry.location);
         } else {
             console.error(err);
         }
