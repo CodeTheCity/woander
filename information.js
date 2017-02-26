@@ -20,7 +20,7 @@ function getDetails(query, long, lat, callback) {
                 callback([]);
                 return;
             } else {
-                getPlaceInformation(result[0].place_id, function (data) {
+                getPlaceInformation(results[0].place_id, function (data) {
                     var address = data.formatted_address;
                     var times = data.opening_hours;
 
