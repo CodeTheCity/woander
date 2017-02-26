@@ -32,7 +32,7 @@ var messenger = new fb(config.facebook);
 fb_parser.on('invalid', function(message) {
   // No point showing typing when we already know the reply
   var recipient = messenger.createRecipient(message.id);
-  var fbMessage = messenger.createMessage(message.text);
+  var fbMessage = messenger.createMessage(message.text, false, messenger.createQuickReplies(['location']));
 
   messenger.sendMessage(recipient, fbMessage);
 })
@@ -61,6 +61,26 @@ app.post('/fb_webhook', function (req, res) {
         fb_parser.run({
           id: messages[m].sender.id,
           text: messages[m].message.text
+        });
+      } else if(messages[m].message.attachments){
+        var attachments = messages[m].message.attachments;
+        attachments.forEach(function(item) {
+          var reply;
+          switch(item.type){
+             case 'location':
+              // TODO: Use the location
+              var mess = {
+                id: messages[m].sender.id,
+                location: item.payload.coordinates
+              };
+              reply = messenger.createMessage("We know where you live.... lat:"+item.payload.coordinates.lat+" long:"+item.payload.coordinates.long);
+              messenger.sendMessage(recipient,reply);
+              break;
+            default:
+              reply = messenger.createMessage("We currently cannot handle this attachment, sorry.");
+              messenger.sendMessage(recipient, reply);
+              break;
+          }
         });
       }
     }

@@ -39,8 +39,22 @@ function getOpeningTimes(id, callback) {
     });
 }
 
+function getLocation(location, callback) {
+    googleMaps.geocode({
+        address: location
+    }, function (err, response) {
+        if (!err) {
+            //console.log(response.json);
+            callback(response.json.results[0].geometry.location);//.address_components); //.opening_hours.periods);
+        }
+    });
+}
 
-//example call
+//example calls
 getDetails("starbucks", 57.1660063, -2.1054137, function (data) {
+    console.log(data);
+});
+
+getLocation("Union Street, Aberdeen", function (data) {
     console.log(data);
 });
