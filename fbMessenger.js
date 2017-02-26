@@ -13,6 +13,25 @@ const DEFAULT_ACTION = 'typing_off';
 // MESSAGE META
 const DEFAULT_MESSAGE = 'Hello Facebook Messenger';
 
+// QUICK_REPLIES
+const QUICK_REPLIES = {
+    location: {
+        content_type: "location"
+    },
+    red: {
+        content_type:"text",
+        title:"Red",
+        payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED",
+        image_url:"http://petersfantastichats.com/img/red.png"
+    },
+    green: {
+        content_type:"text",
+        title:"Green",
+        payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN",
+        image_url:"http://petersfantastichats.com/img/green.png"
+    }
+}
+
 function FbMessenger(config) {
     config = config || {};
     this.token = config.token || '';
@@ -109,6 +128,18 @@ FbMessenger.prototype.createMessage = function(text, attachment, quick_replies, 
         message.quick_replies = quick_replies;
     }
     return message;
+};
+
+FbMessenger.prototype.createQuickReplies = function(types, custom) {
+    var replies = [];
+    types.forEach(function(type) {
+        replies.push(QUICK_REPLIES[type]);
+    }, types);
+    custom = custom || false;
+    if(custom) {
+        return replies.concat(custom);
+    }
+    return replies;
 };
 
 module.exports = FbMessenger;
