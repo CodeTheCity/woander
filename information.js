@@ -1,7 +1,6 @@
 var async = require('async');
 
 var config = require('./config.json');
-
 var key = config.google.api_key;
 
 var googleMaps = require('@google/maps').createClient({
@@ -12,29 +11,34 @@ function getDetails(query, long, lat, callback) {
     googleMaps.places({
         query: query,
         location: [long, lat],
-        //radius: radius
     }, function (err, response) {
         if (!err) {
             var results = response.json.results;
 
             async.map(results, function (result, cb) {
-                getOpeningTimes(result.place_id, function (data) {
-                    cb(null, { address: data });
+                getPlaceInformation(result.place_id, function (data) {
+                    var address = data.formatted_address;
+                    var times = data.opening_hours;
+
+                    cb(null, {
+                        name: data.name,
+                        address: address,
+                        times: times
+                    });
                 });
             }, function (err, result) {
                 callback(result);
             });
         }
     });
-
 }
 
-function getOpeningTimes(id, callback) {
+function getPlaceInformation(id, callback) {
     googleMaps.place({
         placeid: id
     }, function (err, response) {
         if (!err) {
-            callback(response.json.result);//.address_components); //.opening_hours.periods);
+            callback(response.json.result);
         }
     });
 }
@@ -44,17 +48,12 @@ function getLocation(location, callback) {
         address: location
     }, function (err, response) {
         if (!err) {
-            //console.log(response.json);
-            callback(response.json.results[0].geometry.location);//.address_components); //.opening_hours.periods);
+            callback(response.json.results[0].geometry.location);
         }
     });
 }
 
-//example calls
-getDetails("starbucks", 57.1660063, -2.1054137, function (data) {
-    console.log(data);
-});
-
-getLocation("Union Street, Aberdeen", function (data) {
-    console.log(data);
-});
+module.exports = {
+    details: getDetails,
+    location: getLocation
+};

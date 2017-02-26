@@ -54,6 +54,8 @@ class Parser extends EventEmitter {
           }
         });
 
+        session.location = input.location;
+
         this.emit('go', input, session);
       } else {
         this.emit('search', input, session);

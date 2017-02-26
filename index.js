@@ -12,8 +12,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(morgan('tiny'))
 
-var request = require('request');
-
 var parser = require('./parser');
 
 var verify_token = config.facebook.verify;
@@ -29,6 +27,8 @@ app.get('/fb_webhook', function (req, res) {
 var fb_parser = new parser();
 var messenger = new fb(config.facebook);
 
+var gmaps = require('./information');
+
 fb_parser.on('invalid', function(message) {
   // No point showing typing when we already know the reply
   var recipient = messenger.createRecipient(message.id);
@@ -43,15 +43,28 @@ fb_parser.on('invalid', function(message) {
 
     messenger.sendMessage(recipient, fbMessage);
 })
+.on('search', function(message) {
+  gmaps.location(message.text, function(data) {
+    message.location = data;
+    fb_parser.run(message);
+  })
+})
 .on('go', function(message, query) {
   var recipient = messenger.createRecipient(message.id);
   // Shows us as typing
   messenger.sendAction(recipient,'typing_on');
 
-  // TODO: Do some async stuff here to get useful information
+  // Do some async stuff here to get useful information
+  gmaps.details(query.subject, query.location.lng, query.location.lat, function(data) {
+    var text = "";
 
-  var fbMessage = messenger.createMessage();
-  messenger.sendMessage(recipient, fbMessage);
+    if (data && data.length > 0) {
+      text += data[0].name + " is " + (data[0].times.open_now ? "open" : "closed");
+    }
+
+    var fbMessage = messenger.createMessage(text);
+    messenger.sendMessage(recipient, fbMessage);
+  });
 });
 
 app.post('/fb_webhook', function (req, res) {
