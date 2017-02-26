@@ -4,15 +4,15 @@ var locationRegex = /(in|on)(.+)/ig;
 var EventEmitter = require('events');
 var levelup = require('level');
 
-var db = levelup('./session.db', {
-  json: true
-});
+var db = levelup('./session.db');
 
 class Parser extends EventEmitter {
   run(input) {
     var self = this;
 
-    db.get(input.type + input.id, function(err, session) {
+    db.get(input.type + input.id, function(err, data) {
+      var session = JSON.parse(data);
+
       if (err) {
         if(err.notFound) {
           self.parse.call(self, input, null);
@@ -39,7 +39,7 @@ class Parser extends EventEmitter {
           state: match[3].trim()
         };
 
-        db.put(input.type + input.id, query, function(err) {
+        db.put(input.type + input.id, JSON.stringify(query), function(err) {
           if (err) {
             console.error(err); // Bad things have happened
           }

@@ -81,7 +81,8 @@ app.post('/fb_webhook', function (req, res) {
       if (messages[m].message && messages[m].message.text) {
         fb_parser.run({
           id: messages[m].sender.id,
-          text: messages[m].message.text
+          text: messages[m].message.text,
+          type: 'fb'
         });
       } else if(messages[m].messeage && messages[m].message.attachments){
         var attachments = messages[m].message.attachments;
@@ -95,7 +96,8 @@ app.post('/fb_webhook', function (req, res) {
                 location: {
                   lat: item.payload.coordinates.lat,
                   lng: item.payload.coordinates.long
-                }
+                },
+                type: 'fb'
               });
 
               break;
