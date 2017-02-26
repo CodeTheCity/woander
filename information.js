@@ -11,6 +11,7 @@ function getDetails(query, long, lat, callback) {
     googleMaps.places({
         query: query,
         location: [long, lat],
+        rankby: 'distance'
     }, function (err, response) {
         if (!err) {
             var results = response.json.results;
