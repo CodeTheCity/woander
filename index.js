@@ -59,7 +59,9 @@ fb_parser.on('invalid', function(message) {
     var text = "";
 
     if (data && data.length > 0) {
-      text += data[0].name + " is " + (data[0].times.open_now ? "open" : "closed");
+      text += data[0].name + " at " +
+        data[0].formatted_address + " is " +
+        (data[0].times.open_now ? "open" : "closed");
     }
 
     var fbMessage = messenger.createMessage(text);
