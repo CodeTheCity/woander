@@ -1,3 +1,5 @@
 {
-  "facebook_verify_token": "TEST_TOKEN"
+  "facebook": {
+    "verify": "test token"
+  }
 }
