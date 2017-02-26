@@ -8,6 +8,8 @@ var googleMaps = require('@google/maps').createClient({
 });
 
 function getDetails(query, long, lat, callback) {
+    console.log(query, long, lat);
+
     googleMaps.places({
         query: query,
         location: [long, lat],
