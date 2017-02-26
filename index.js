@@ -62,6 +62,8 @@ fb_parser.on('invalid', function(message) {
       text += data[0].name + " at " +
         data[0].address + " is " +
         (data[0].times.open_now ? "open" : "closed");
+    } else {
+      text += "Unfortunately I couldn't find where you were looking for";
     }
 
     var fbMessage = messenger.createMessage(text);
