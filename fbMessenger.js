@@ -37,9 +37,10 @@ FbMessenger.prototype.sendMessage = function(recipient, message, action, notific
             action: action,
             notification_type: notification_type
         }
-    }, function(err, data) {
-        console.log(err);
-        console.log(data);
+    }, function(err, res, data) {
+        if (err) {
+          console.log(data);
+        }
     });
 };
 
@@ -56,9 +57,10 @@ FbMessenger.prototype.sendAction = function(recipient, action) {
                 recipient: recipient,
                 sender_action: action
             }
-        }, function(err, data) {
-            console.log(err);
-            console.log(data);
+        }, function(err, res, data) {
+            if (err) {
+              console.log(data);
+            }
         });
     }
 };
@@ -73,9 +75,12 @@ FbMessenger.prototype.getUserProfile = function(id, callback) {
         json: true,
         body: {
         }
-    }, function(err, data) {
-        console.log(err);
-        callback(data);
+    }, function(err, res, data) {
+      if (err) {
+        console.log(data);
+      }
+
+      callback(data);
     });
 };
 
