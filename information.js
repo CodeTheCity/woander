@@ -1,44 +1,45 @@
 var async = require('async');
+var request = require('request');
 
 var config = require('./config.json');
 var key = config.google.api_key;
 
 var googleMaps = require('@google/maps').createClient({
-    key: key
+
 });
 
 function getDetails(query, long, lat, callback) {
-    googleMaps.placesNearby({
-        keyword: query,
-        location: [long, lat],
-        rankby: 'distance'
-    }, function (err, response) {
-        if (!err) {
-            var results = response.json.results;
-
-            if (!results || results.length == 0) {
-                callback([]);
-                return;
-            } else {
-                getPlaceInformation(results[0].place_id, function (data) {
-                    var address = data.formatted_address;
-                    var times = data.opening_hours;
-
-                    callback([{
-                        name: data.name,
-                        address: address,
-                        times: times
-                    }]);
-                });
-            }
-
-            // async.map(results, function (result, cb) {
-            //cb(null, );
-            // }, function (err, result) {
-            //     callback(result);
-            // });
-        } else {
+    request({
+        url: "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+        json: true,
+        qs: {
+            key: key,
+            keyword: query,
+            location: long + "," + lat,
+            rankby: 'distance'
+        }
+    }, function(err, res, data) {
+        if(err) {
             console.error(err);
+        }
+
+        console.log(data);
+
+        var results = data.results;
+
+        if (!results || results.length == 0) {
+            callback([]);
+        } else {
+            getPlaceInformation(results[0].place_id, function (data) {
+                var address = data.formatted_address;
+                var times = data.opening_hours;
+
+                callback([{
+                    name: data.name,
+                    address: address,
+                    times: times
+                }]);
+            });
         }
     });
 }
