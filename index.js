@@ -92,6 +92,7 @@ app.post('/fb_webhook', function (req, res) {
         var attachments = messages[m].message.attachments;
         attachments.forEach(function(item) {
           var reply;
+
           switch(item.type){
              case 'location':
               // Use the location
@@ -104,12 +105,15 @@ app.post('/fb_webhook', function (req, res) {
                 type: 'fb'
               });
 
+              reply = messenger.createMessage("Looking up that location for you");
+
               break;
             default:
               reply = messenger.createMessage("We currently cannot handle this attachment, sorry.");
-              messenger.sendMessage(recipient, reply);
               break;
           }
+
+          messenger.sendMessage(recipient, reply);
         });
       }
     }
