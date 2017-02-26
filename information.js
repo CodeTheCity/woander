@@ -8,8 +8,6 @@ var googleMaps = require('@google/maps').createClient({
 });
 
 function getDetails(query, long, lat, callback) {
-    console.log(query, long, lat);
-
     googleMaps.places({
         query: query,
         location: [long, lat],
@@ -36,6 +34,8 @@ function getDetails(query, long, lat, callback) {
             }, function (err, result) {
                 callback(result);
             });
+        } else {
+            console.error(err);
         }
     });
 }
@@ -46,6 +46,8 @@ function getPlaceInformation(id, callback) {
     }, function (err, response) {
         if (!err) {
             callback(response.json.result);
+        } else {
+            console.error(err);
         }
     });
 }
@@ -56,6 +58,8 @@ function getLocation(location, callback) {
     }, function (err, response) {
         if (!err) {
             callback(response.json.results[0].geometry.location);
+        } else {
+            console.error(err);
         }
     });
 }
