@@ -11,8 +11,6 @@ class Parser extends EventEmitter {
     var self = this;
 
     db.get(input.type + input.id, function(err, data) {
-      var session = JSON.parse(data);
-
       if (err) {
         if(err.notFound) {
           self.parse.call(self, input, null);
@@ -20,6 +18,7 @@ class Parser extends EventEmitter {
           console.error(err); // Bad things have happened
         }
       } else {
+        var session = JSON.parse(data);
         self.parse.call(self, input, session);
       }
     });
