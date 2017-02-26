@@ -57,10 +57,12 @@ app.post('/fb_webhook', function (req, res) {
       var recipient = messenger.createRecipient(messages[m].sender.id);
       messenger.sendAction(recipient, 'mark_seen');
 
-      fb_parser.run({
-        id: messages[m].sender.id,
-        text: messages[m].message.text
-      });
+      if (messages[m].message.text) {
+        fb_parser.run({
+          id: messages[m].sender.id,
+          text: messages[m].message.text
+        });
+      }
     }
   }
 
