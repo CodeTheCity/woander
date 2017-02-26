@@ -86,7 +86,18 @@ FbMessenger.prototype.createRecipient = function(id) {
     }
 };
 
-FbMessenger.prototype.createMessage = function(text, attachment, quick_replies, metadata) {
+FbMessenger.prototype.createMessage = function(text, attachment, metadata) {
+    text = text || DEFAULT_MESSAGE;
+    attachment = attachment || false;
+    metadata = metadata || '';
+    return {
+        text: text,
+        attachment: attachment,
+        metadata: metadata
+    }
+};
+
+FbMessenger.prototype.createMessageWithQuickReplies = function(text, attachment, quick_replies, metadata) {
     text = text || DEFAULT_MESSAGE;
     attachment = attachment || false;
     quick_replies = quick_replies || [];
