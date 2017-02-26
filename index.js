@@ -29,7 +29,7 @@ app.get('/fb_webhook', function (req, res) {
 var fb_parser = new parser();
 var messenger = new fb(config.facebook);
 
-fb_parser.on('more', function(message) {
+fb_parser.on('invalid', function(message) {
   // No point showing typing when we already know the reply
   var recipient = messenger.createRecipient(message.id);
   var fbMessage = messenger.createMessage(message.text, false, messenger.createQuickReplies(['location']));
@@ -42,7 +42,7 @@ fb_parser.on('more', function(message) {
   messenger.sendAction(recipient,'typing_on');
 
   // TODO: Do some async stuff here to get useful information
-  var fbMessage = messenger.createMessage("You searched for " + query.subject + " " + query.state + " times");
+  var fbMessage = messenger.createMessage();
   messenger.sendMessage(recipient, fbMessage);
 });
 
@@ -57,7 +57,7 @@ app.post('/fb_webhook', function (req, res) {
       var recipient = messenger.createRecipient(messages[m].sender.id);
       messenger.sendAction(recipient, 'mark_seen');
 
-      if (messages[m].message.text) {
+      if (messages[m].message && messages[m].messsage.text) {
         fb_parser.run({
           id: messages[m].sender.id,
           text: messages[m].message.text
@@ -97,12 +97,20 @@ app.post('/fb_webhook', function (req, res) {
 app.post('/webhook', function(req, res) {
   var p = new parser();
 
-  p.on('more', function(message) {
-    res.send(message);
+  p.on('invalid', function(message, query) {
+    res.send("I'm not sure what you mean?");
     res.end();
   })
-  .on('go', function(message, query) {
-    res.send(query);
+  .on('location', function(message, query) {
+    res.send("Please provide me your location?");
+    res.end();
+  })
+  .on('search', function(message, query) {
+    res.send("Finding location");
+    res.end();
+  })
+  .on('go', function(message) {
+    res.send("Here's your times");
     res.end();
   })
   .run(req.body);
