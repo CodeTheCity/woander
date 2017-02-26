@@ -91,28 +91,24 @@ FbMessenger.prototype.createRecipient = function(id) {
     }
 };
 
-FbMessenger.prototype.createMessage = function(text, attachment, metadata) {
+FbMessenger.prototype.createMessage = function(text, attachment, quick_replies, metadata) {
+    var message = {};
     text = text || DEFAULT_MESSAGE;
     attachment = attachment || false;
-    metadata = metadata || '';
-    return {
-        text: text,
-        attachment: attachment,
-        metadata: metadata
+    if(attachment) {
+        message.attachment = attachment;
+    } else {
+        message.text = text;
     }
-};
-
-FbMessenger.prototype.createMessageWithQuickReplies = function(text, attachment, quick_replies, metadata) {
-    text = text || DEFAULT_MESSAGE;
-    attachment = attachment || false;
-    quick_replies = quick_replies || [];
-    metadata = metadata || '';
-    return {
-        text: text,
-        attachment: attachment,
-        quick_replies: quick_replies,
-        metadata: metadata
+    metadata = metadata || false;
+    if(metadata) {
+        message.metadata = metadata;
     }
+    quick_replies = quick_replies || false;
+    if(quick_replies) {
+        message.quick_replies = quick_replies;
+    }
+    return message;
 };
 
 module.exports = FbMessenger;
