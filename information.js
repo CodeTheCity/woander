@@ -8,8 +8,8 @@ var googleMaps = require('@google/maps').createClient({
 });
 
 function getDetails(query, long, lat, callback) {
-    googleMaps.places({
-        query: query,
+    googleMaps.placesNearby({
+        keyword: query,
         location: [long, lat],
         rankby: 'distance'
     }, function (err, response) {
@@ -19,22 +19,24 @@ function getDetails(query, long, lat, callback) {
             if (!results || results.length == 0) {
                 callback([]);
                 return;
-            }
-
-            async.map(results, function (result, cb) {
-                getPlaceInformation(result.place_id, function (data) {
+            } else {
+                getPlaceInformation(result[0].place_id, function (data) {
                     var address = data.formatted_address;
                     var times = data.opening_hours;
 
-                    cb(null, {
+                    callback([{
                         name: data.name,
                         address: address,
                         times: times
-                    });
+                    }]);
                 });
-            }, function (err, result) {
-                callback(result);
-            });
+            }
+
+            // async.map(results, function (result, cb) {
+            //cb(null, );
+            // }, function (err, result) {
+            //     callback(result);
+            // });
         } else {
             console.error(err);
         }
