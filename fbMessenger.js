@@ -15,10 +15,10 @@ const DEFAULT_MESSAGE = 'Hello Facebook Messenger';
 
 function FbMessenger(config) {
     config = config || {};
-    this.token = config.token;
+    this.token = config.token || '';
     this.app_secret = config.app_secret || false;
     this.verify_token = config.verify_token || false;
-};
+}
 
 // Use this to actually send the message
 FbMessenger.prototype.sendMessage = function(recipient, message, action, notification_type) {
@@ -97,4 +97,6 @@ FbMessenger.prototype.createMessage = function(text, attachment, quick_replies, 
         quick_replies: quick_replies,
         metadata: metadata
     }
-}
+};
+
+module.exports = FbMessenger;

@@ -50,17 +50,18 @@ var response_facebook = function(message) {
 app.post('/fb_webhook', function (req, res) {
   var entries = req.body.entry;
   var p = new parser();
+  var messenger = new fb(config.facebook);
 
   p.emitter.on('more', function(message) {
-    var recipient = fb.createRecipient(message.id);
-    var fbMessage = fb.createMessage(message.text);
-    fb.sendMessage(recipient, fbMessage);
+    var recipient = messenger.createRecipient(message.id);
+    var fbMessage = messenger.createMessage(message.text);
+    messenger.sendMessage(recipient, fbMessage);
   });
 
   p.emitter.on('go', function(message, query) {
-    var recipient = fb.createRecipient(message.id);
-    var fbMessage = fb.createMessage("You searched for " + query.subject + " " + query.state + " times");
-    fb.sendMessage(recipient, fbMessage);
+    var recipient = messenger.createRecipient(message.id);
+    var fbMessage = messenger.createMessage("You searched for " + query.subject + " " + query.state + " times");
+    messenger.sendMessage(recipient, fbMessage);
   });
 
   for (var e in entries) {
@@ -68,7 +69,7 @@ app.post('/fb_webhook', function (req, res) {
 
     for (var m in messages) {
       // Shows us as typing
-      fb.sendAction(messages[m].sender.id,'typing_on');
+      messenger.sendAction(messages[m].sender.id,'typing_on');
 
       p.run({
         id: messages[m].sender.id,
@@ -88,6 +89,7 @@ app.post('/fb_webhook', function (req, res) {
 
 app.post('/webhook', function(req, res) {
   var p = new parser();
+  console.log(req.body);
 
   p.emitter.on('more', function(message) {
     res.send(message);
