@@ -32,7 +32,7 @@ var messenger = new fb(config.facebook);
 fb_parser.on('more', function(message) {
   // No point showing typing when we already know the reply
   var recipient = messenger.createRecipient(message.id);
-  var fbMessage = messenger.createMessage(message.text);
+  var fbMessage = messenger.createMessage(message.text, false, messenger.createQuickReplies(['location']));
 
   messenger.sendMessage(recipient, fbMessage);
 })
