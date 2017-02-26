@@ -40,4 +40,5 @@ jspm_packages
 .node_repl_history
 
 # Config - keys and tokens
-config.json
+.idea
+*.swp
