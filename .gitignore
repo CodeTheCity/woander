@@ -1,6 +1,9 @@
 # ENV
 config.json
 
+# DB Session
+session.db
+
 # Logs
 logs
 *.log
