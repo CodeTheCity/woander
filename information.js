@@ -15,6 +15,11 @@ function getDetails(query, long, lat, callback) {
         if (!err) {
             var results = response.json.results;
 
+            if (!results || results.length == 0) {
+                callback([]);
+                return;
+            }
+
             async.map(results, function (result, cb) {
                 getPlaceInformation(result.place_id, function (data) {
                     var address = data.formatted_address;
