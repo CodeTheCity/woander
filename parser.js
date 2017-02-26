@@ -48,6 +48,8 @@ class Parser extends EventEmitter {
         this.emit('location', input, query);
       }
     } else {
+      console.log(input);
+
       if (input.location) {
         db.del(input.type + input.id, function(err) {
           if (err) {
