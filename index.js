@@ -3,7 +3,7 @@ var config = require('./config.json');
 var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
-var fb = require('./FbMessenger');
+var fb = require('./fbMessenger');
 
 var app = express();
 
