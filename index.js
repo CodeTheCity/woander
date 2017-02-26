@@ -39,11 +39,11 @@ app.post('/fb_webhook', function (req, res) {
   });
 
   p.emitter.on('go', function(message, query) {
+    var recipient = messenger.createRecipient(message.id);
     // Shows us as typing
-    messenger.sendAction(messages[m].sender.id,'typing_on');
+    messenger.sendAction(recipient,'typing_on');
 
     // TODO: Do some async stuff here to get useful information
-    var recipient = messenger.createRecipient(message.id);
     var fbMessage = messenger.createMessage("You searched for " + query.subject + " " + query.state + " times");
     messenger.sendMessage(recipient, fbMessage);
   });
@@ -53,7 +53,8 @@ app.post('/fb_webhook', function (req, res) {
 
     for (var m in messages) {
       // Indicate we have seen the message
-      messenger.sendAction(messages[m].sender.id,'mark_seen');
+      var recipient = messenger.createRecipient(messages[m].sender.id);
+      messenger.sendAction(recipient,'mark_seen');
 
       p.run({
         id: messages[m].sender.id,
