@@ -27,6 +27,7 @@ app.get('/fb_webhook', function (req, res) {
 });
 
 var fb_parser = new parser();
+var messenger = new fb(config.facebook);
 
 fb_parser.on('more', function(message) {
   // No point showing typing when we already know the reply
@@ -47,8 +48,6 @@ fb_parser.on('more', function(message) {
 
 app.post('/fb_webhook', function (req, res) {
   var entries = req.body.entry;
-
-  var messenger = new fb(config.facebook);
 
   for (var e in entries) {
     var messages = entries[e].messaging;
