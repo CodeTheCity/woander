@@ -1,5 +1,7 @@
 {
   "facebook": {
-    "verify": "test token"
+    "token": "",
+    "app_secret": "",
+    "verify_token": ""
   }
 }
