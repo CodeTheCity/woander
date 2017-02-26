@@ -3,5 +3,8 @@
     "token": "",
     "app_secret": "",
     "verify_token": ""
+  },
+  "google": {
+    "api_key": ""
   }
 }
